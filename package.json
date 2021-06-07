@@ -1,0 +1,30 @@
+{
+  "name": "hhapp",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.20.2",
+    "concurrently": "^6.2.0",
+    "typescript": "~4.2.0"
+  },
+  "dependencies": {
+    "metro-config": "^0.56.0"
+  },
+  "scripts": {
+    "android": "lerna --scope=NativeApp run android --stream --",
+    "prestart": "npm run build",
+    "start": "concurrently \"npm run start:client\" \"npm run start:watch\"",
+    "start:client": "lerna run start --stream  --scope=@hhapp/client",
+    "start:watch": "lerna run watch --parallel",
+    "build": "lerna run build:libs",
+    "ios": "lerna --scope=NativeApp run ios --stream --",
+    "web": "lerna --scope=web-app run start --stream --",
+    "expo": "lerna --scope=@hhapp/expo_app run web --stream --",
+    "postinstall": "cd ./packages/ExpoApp && expo-yarn-workspaces postinstall"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": ["**/react-native", "**/react-native/**", "**/expo", "**/expo/**"]
+  }
+}

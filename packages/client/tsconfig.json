@@ -1,0 +1,24 @@
+{
+  "include": ["src", "types", "jest.setup.ts",".eslintrc.js"],
+  "extends": "../../tsconfig.json",
+  "references": [
+    { "path":  "../foo" }
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "paths": { "*": ["web_modules/.types/*"],"@/*": ["src/*"] },
+    /* paths - import rewriting/resolving */
+    /* noEmit - Snowpack builds (emits) files, not tsc. */
+    "noEmit": true,
+    /* Additional Options */
+
+    "types": ["mocha", "snowpack-env"],
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+
+    "importsNotUsedAsValues": "error"
+  }
+}
