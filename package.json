@@ -14,12 +14,10 @@
     "prestart": "npm run build",
     "start": "concurrently \"npm run start:client\" \"npm run start:watch\"",
     "start:client": "lerna run start --stream  --scope=@hhapp/client",
+    "start:server": "lerna run dev --stream  --scope=@hhapp/server",
     "start:watch": "lerna run watch --parallel",
     "build": "lerna run build:libs",
-    "ios": "lerna --scope=NativeApp run ios --stream --",
-    "web": "lerna --scope=web-app run start --stream --",
-    "expo": "lerna --scope=@hhapp/expo_app run web --stream --",
-    "postinstall": "cd ./packages/ExpoApp && expo-yarn-workspaces postinstall"
+    "web": "lerna --scope=web-app run start --stream --"
   },
   "workspaces": {
     "packages": [

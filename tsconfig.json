@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+        "target": "es2018",
+		"sourceMap": true,
+		"noEmitOnError": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"types": [],
+		"jsx": "react",
+		"baseUrl": ".",
+		"paths": {
+			"@hhapp/*": ["packages/*/src"]
+		}
+	},
+	"exclude": ["node_modules", "dist"]
+}
