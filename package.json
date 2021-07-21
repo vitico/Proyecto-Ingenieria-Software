@@ -2,8 +2,8 @@
   "name": "hhapp",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.20.2",
     "concurrently": "^6.2.0",
+    "lerna": "^3.20.2",
     "typescript": "~4.2.0"
   },
   "dependencies": {
@@ -12,7 +12,7 @@
   "scripts": {
     "android": "lerna --scope=NativeApp run android --stream --",
     "prestart": "npm run build",
-    "start": "concurrently \"npm run start:client\" \"npm run start:watch\"",
+    "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start:client": "lerna run start --stream  --scope=@hhapp/client",
     "start:server": "lerna run dev --stream  --scope=@hhapp/server",
     "start:watch": "lerna run watch --parallel",
@@ -22,7 +22,6 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": ["**/react-native", "**/react-native/**", "**/expo", "**/expo/**"]
+    ]
   }
 }

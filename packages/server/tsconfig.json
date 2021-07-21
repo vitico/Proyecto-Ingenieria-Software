@@ -3,18 +3,13 @@
   "include": [
     "src/**/*",
     "tests/**/*",
-
   ],
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "types": ["mocha"],
-    "outDir": "./dist",
-    "rootDir": "./src",
     "baseUrl": ".",
-    "lib": ["es2018", "esnext.asynciterable"],
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "lib": ["es2018", "esnext.asynciterable", "ES2015.Promise"],
     "paths": {
       "@/*": ["src/*"]
     }

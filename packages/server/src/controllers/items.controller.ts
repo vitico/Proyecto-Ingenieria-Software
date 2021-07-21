@@ -1,53 +1,26 @@
-import { Item } from "../models/item.model";
-import { Router, Request, Response, NextFunction } from "express";
+import { Item } from '@/models/item.model';
+import { Request, Response } from 'express';
+import { Controller, Get, Post, Req, Res } from 'routing-controllers';
+import Youch from "youch";
 
+@Controller("/items")
 export class ItemsController {
 
-    public router: Router;
+    @Get('/:id')
+    private get(@Req() req: Request, @Res() res: Response) {
 
-    constructor() {
-        this.router = Router();
-        this.initRoutes();
+        return Item.findOne(req.params.id)
     }
 
-    private get(req: Request, res: Response, next: NextFunction) {
-
-        Item.findById(req.params.id)
-            .then(resolve => {
-                res.status(200).json(resolve);
-            })
-            .catch(err => {
-                console.error(err);
-            });
+    @Get('/')
+    private getAll(@Req() req: Request, @Res() res: Response) {
+        return Item.find()
     }
 
-    private getAll(req: Request, res: Response, next: NextFunction) {
-        Item.find({})
-            .then(resolve => {
-                res.status(200).json(resolve);
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    }
-
-    private post(req: Request, res: Response, next: NextFunction) {
+    @Post('/')
+    private post(@Req() req: Request, @Res() res: Response) {
         let item = new Item(req.body);
 
-        item.save()
-            .then(resolve => {
-                res.status(200).json(resolve);
-            })
-            .catch(err => {
-                res.status(500).json(err);
-            });
+        return item.save()
     }
-
-    private initRoutes() {
-        this.router
-            .get('/', this.getAll.bind(this))
-            .get('/:id', this.get.bind(this))
-            .post('/', this.post.bind(this));
-    }
-
 }

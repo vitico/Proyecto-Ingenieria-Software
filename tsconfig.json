@@ -1,17 +1,29 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-        "target": "es2018",
-		"sourceMap": true,
-		"noEmitOnError": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"types": [],
-		"jsx": "react",
-		"baseUrl": ".",
-		"paths": {
-			"@hhapp/*": ["packages/*/src"]
-		}
-	},
-	"exclude": ["node_modules", "dist"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2018",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "noEmit": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "types": [],
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@hhapp/*": [
+        "packages/*/src"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

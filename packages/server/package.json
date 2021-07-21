@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "prestart": "npm run build",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run start",
+    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "dev:start": "ts-node src/index.ts",
     "build": "tsc  -p tsconfig.build.json",
     "test": "mocha --exit --reporter spec --require ts-node/register --require tsconfig-paths/register --require mocha-suppress-logs tests/**/*.test.ts"
   },
@@ -40,10 +41,8 @@
     "@types/node": "^8.0.53",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
-    "concurrently": "^6.2.0",
     "mocha": "^9.0.0",
     "mocha-suppress-logs": "^0.3.1",
-    "mockgoose": "^8.0.4",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
     "nodemon": "^1.12.1",
@@ -52,14 +51,25 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "@typegoose/typegoose": "^7.6.1",
+    "@types/cors": "^2.8.12",
+    "@types/pg": "^8.6.1",
     "body-parser": "^1.19.0",
+    "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "cors": "^2.8.5",
+    "debug": "^4.3.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-youch": "^1.0.1",
     "graphql": "^15.5.1",
-    "mongoose": "^5.12.13",
+    "helmet": "^4.6.0",
+    "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^1.1.1"
+    "routing-controllers": "^0.9.0",
+    "type-graphql": "^1.1.1",
+    "typedi": "^0.10.0",
+    "typeorm": "^0.2.34",
+    "youch": "^2.2.2",
+    "youch-terminal": "^1.1.1"
   }
 }

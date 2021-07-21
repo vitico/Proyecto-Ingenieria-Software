@@ -1,49 +1,37 @@
-import { Schema, Document, Mongoose, Model, model } from "mongoose";
-import { prop, getModelForClass, pre } from '@typegoose/typegoose';
-import { ObjectType, Field } from "type-graphql";
-export interface IItemModel extends Document {
-    name: string;
-    description: string;
-    isActive: boolean;
-    createdAt: Date;
-    modifiedAt: Date;
-}
-
-@ObjectType()
-@pre<ItemClass>('save', function() {
-    let now = new Date();
-    if (!this.createdAt) {
-        this.createdAt = now;
+import { ObjectType, Field, ID } from 'type-graphql';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+class HBaseEntity extends BaseEntity {
+    constructor(data:any){
+        super();
+        Object.assign(this,data);
     }
-    this.modifiedAt = now;
-})
-export class ItemClass {
-
+}
+@Entity()
+export class ItemClass extends HBaseEntity{
+    @Field(()=>ID)
+    @PrimaryGeneratedColumn({})
+    id!: string;
     @Field()
-    @prop({ required: true })
+    @Column({nullable:false})
     name!: string;
 
     @Field()
-    @prop({ required: true })
+    @Column({nullable:false})
     description!: string;
 
     @Field()
-    @prop({ required: true, defaults: false })
+    @Column({nullable:false, default: false})
     isActive!: boolean;
 
     @Field()
-    @prop({ required: true })
+    @Column({nullable:false})
     createdAt!: Date
     
     @Field()
-    @prop({ required: true })
+    @Column({nullable:false})
     modifiedAt!:Date
 
 }
 
 
-export const Item = getModelForClass(ItemClass, {
-    options: {
-        customName:"Item"
-    }
-})
+export const Item = ItemClass
