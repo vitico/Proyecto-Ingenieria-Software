@@ -1,0 +1,9 @@
+{
+    "watch": ["src"],
+    "ignore": ["**/*.test.(t|j)s", "**/*.spec.(t|j)s", ".git", "node_modules"],
+    "exec":"ts-node src/index.ts",
+    "ext":"ts",
+    "events": {
+        "restart": "npm run lint"
+    }
+}

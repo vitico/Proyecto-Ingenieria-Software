@@ -1,26 +1,26 @@
-import { Item } from '@/models/item.model';
+import { Item } from '../models/item.model';
 import { Request, Response } from 'express';
 import { Controller, Get, Post, Req, Res } from 'routing-controllers';
-import Youch from "youch";
+import { Service } from 'typedi';
+import Youch from 'youch';
 
-@Controller("/items")
+@Controller('/items')
+@Service()
 export class ItemsController {
-
     @Get('/:id')
     private get(@Req() req: Request, @Res() res: Response) {
-
-        return Item.findOne(req.params.id)
+        return Item.findOne(req.params.id);
     }
 
     @Get('/')
     private getAll(@Req() req: Request, @Res() res: Response) {
-        return Item.find()
+        return Item.find();
     }
 
     @Post('/')
     private post(@Req() req: Request, @Res() res: Response) {
-        let item = new Item(req.body);
+        const item = new Item(req.body);
 
-        return item.save()
+        return item.save();
     }
 }

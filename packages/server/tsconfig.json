@@ -3,8 +3,11 @@
   "include": [
     "src/**/*",
     "tests/**/*",
+    ".eslintrc.js"
   ],
   "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "types": ["mocha"],
@@ -12,6 +15,7 @@
     "lib": ["es2018", "esnext.asynciterable", "ES2015.Promise"],
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "allowJs": true
   }
 }

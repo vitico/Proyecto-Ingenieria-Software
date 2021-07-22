@@ -1,37 +1,36 @@
 import { ObjectType, Field, ID } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-class HBaseEntity extends BaseEntity {
-    constructor(data:any){
+export class HBaseEntity extends BaseEntity {
+    constructor(data: any) {
         super();
-        Object.assign(this,data);
+        Object.assign(this, data);
     }
 }
 @Entity()
-export class ItemClass extends HBaseEntity{
-    @Field(()=>ID)
+@ObjectType()
+export class ItemClass extends HBaseEntity {
+    @Field(() => ID)
     @PrimaryGeneratedColumn({})
     id!: string;
     @Field()
-    @Column({nullable:false})
+    @Column({ nullable: false })
     name!: string;
 
     @Field()
-    @Column({nullable:false})
+    @Column({ nullable: false })
     description!: string;
 
     @Field()
-    @Column({nullable:false, default: false})
+    @Column({ nullable: false, default: false })
     isActive!: boolean;
 
     @Field()
-    @Column({nullable:false})
-    createdAt!: Date
-    
-    @Field()
-    @Column({nullable:false})
-    modifiedAt!:Date
+    @Column({ nullable: false })
+    createdAt!: Date;
 
+    @Field()
+    @Column({ nullable: false })
+    modifiedAt!: Date;
 }
 
-
-export const Item = ItemClass
+export const Item = ItemClass;
