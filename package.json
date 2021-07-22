@@ -3,11 +3,12 @@
   "private": true,
   "devDependencies": {
     "concurrently": "^6.2.0",
-    "lerna": "^3.20.2",
-    "typescript": "~4.2.0"
+    "lerna": "^4.0.0",
+    "typescript": "~4.3.5"
   },
   "dependencies": {
-    "metro-config": "^0.56.0"
+    "eslint": "^7.31.0",
+    "prettier": "^2.3.2"
   },
   "scripts": {
     "android": "lerna --scope=NativeApp run android --stream --",
