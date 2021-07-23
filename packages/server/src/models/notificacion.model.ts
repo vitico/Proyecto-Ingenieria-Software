@@ -3,14 +3,12 @@ import { Cliente } from './cliente.model';
 import { HBaseEntity } from './item.model';
 import { Oferta } from './oferta.model';
 enum EstadoCorreo {
-    cancelado = 0,
-    enviado,
-    sinEnviar,
+    cancelado = 'cancelado',
+    enviado = 'enviado',
+    sinEnviar = 'sinenviar',
 }
 @Entity()
 export class Notificacion extends HBaseEntity {
-    @PrimaryGeneratedColumn()
-    id!: number;
     @ManyToOne(() => Cliente, (t) => t.notificaciones, { primary: true })
     cliente!: Cliente;
     @ManyToOne(() => Oferta, (t) => t.notificaciones, { primary: true })
