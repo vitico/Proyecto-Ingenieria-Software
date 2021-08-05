@@ -1,0 +1,15 @@
+/build/**
+/node_modules/**
+/coverage/**
+/docs/**
+/jsdoc/**
+/templates/**
+/tests/bench/**
+/tests/fixtures/**
+/tests/performance/**
+/tools/internal-rules/node_modules/**
+test.js
+!.eslintrc.js
+snowpack.config.mjs
+snowpack.config.js
+web-test-runner.config.js

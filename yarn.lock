@@ -1654,7 +1654,9 @@ __metadata:
   resolution: "@hhapp/server@workspace:packages/server"
   dependencies:
     "@graphql-tools/schema": ^7.1.5
+    "@mando75/typeorm-graphql-loader": ^1.7.4
     "@risingstack/protect": ^1.2.0
+    "@types/bcryptjs": ^2
     "@types/body-parser": ^1.19.1
     "@types/compression": ^1.7.1
     "@types/cors": ^2.8.12
@@ -1676,6 +1678,7 @@ __metadata:
     "@typescript-eslint/parser": ^4.28.4
     apollo-server: ^3.0.2
     apollo-server-express: ^3.0.2
+    bcryptjs: ^2.4.3
     body-parser: ^1.19.0
     chai: ^4.3.4
     chai-http: ^4.3.0
@@ -1690,6 +1693,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-formatter-mo: ^1.0.1
     eslint-import-resolver-node: ^0.3.4
+    eslint-import-resolver-typescript: ^2.4.0
     eslint-plugin-import: ^2.23.4
     eslint-plugin-jest: ^24.4.0
     eslint-plugin-prettier: ^3.4.0
@@ -2559,6 +2563,18 @@ __metadata:
     npmlog: ^4.1.2
     write-file-atomic: ^3.0.3
   checksum: b2fa44f21384264a0dee4f53259611bd978415afa8efcfc15c412ac591c0984057b5a561d2814094abab557dccf263b6712458064ecd111ff068b86812921c0b
+  languageName: node
+  linkType: hard
+
+"@mando75/typeorm-graphql-loader@npm:^1.7.4":
+  version: 1.7.4
+  resolution: "@mando75/typeorm-graphql-loader@npm:1.7.4"
+  dependencies:
+    graphql-parse-resolve-info: ^4.9.0
+  peerDependencies:
+    graphql: ">=15.0.0"
+    typeorm: ">=0.2.8"
+  checksum: 6536979d6012529eb43869314613863365435c39df3fbc0888bac675f4542dd1eb6e9091e93df3fab62555b85ae83651ec563ceb69196d218fb9a444cf25048b
   languageName: node
   linkType: hard
 
@@ -3446,6 +3462,13 @@ __metadata:
   version: 8.10.13
   resolution: "@types/aws-lambda@npm:8.10.13"
   checksum: ebee9e7010ba135a1ef66287a258a883a60b921c98ae4d89fe3fd8757f723b9cab62c326c56b813d0245ef17782fe61127495a6f30d331186777bcc24523858b
+  languageName: node
+  linkType: hard
+
+"@types/bcryptjs@npm:^2":
+  version: 2.4.2
+  resolution: "@types/bcryptjs@npm:2.4.2"
+  checksum: 91013aa8a5e8185137af1fb011de7f794f5bc71400e0aebba2252985a4d0c5eb4c477617c4aa4c20fdb21f05320ac0095eb8b596c004ff5e3315b656e58a0c72
   languageName: node
   linkType: hard
 
@@ -5799,6 +5822,13 @@ __metadata:
   dependencies:
     tweetnacl: ^0.14.3
   checksum: 3f57eb99bbc02352f68ff31e446997f4d21cc9a5e5286449dc1fe0116ec5dac5a4aa538967d45714fa9320312d2be8d16126f2d357da1dd40a3d546b96e097ed
+  languageName: node
+  linkType: hard
+
+"bcryptjs@npm:^2.4.3":
+  version: 2.4.3
+  resolution: "bcryptjs@npm:2.4.3"
+  checksum: 5a320711757b5932da200856a5193cad0123df7c43b46417172eabf2aa436a8f08f64851722052fea6335453f96290005b6694a7dd26d8951810362de343175c
   languageName: node
   linkType: hard
 
@@ -8433,6 +8463,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-import-resolver-typescript@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "eslint-import-resolver-typescript@npm:2.4.0"
+  dependencies:
+    debug: ^4.1.1
+    glob: ^7.1.6
+    is-glob: ^4.0.1
+    resolve: ^1.17.0
+    tsconfig-paths: ^3.9.0
+  peerDependencies:
+    eslint: "*"
+    eslint-plugin-import: "*"
+  checksum: d2f1270c251d02a3e785cb73bd55597a1a97cd859f225a2670fa2444008784eec1b3e747d153ff32a1330670f4eb87bb54d4584af95a3b13e781e73d87d5faea
+  languageName: node
+  linkType: hard
+
 "eslint-module-utils@npm:^2.6.1":
   version: 2.6.1
   resolution: "eslint-module-utils@npm:2.6.1"
@@ -9703,7 +9749,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"graphql-parse-resolve-info@npm:4.12.0":
+"graphql-parse-resolve-info@npm:4.12.0, graphql-parse-resolve-info@npm:^4.9.0":
   version: 4.12.0
   resolution: "graphql-parse-resolve-info@npm:4.12.0"
   dependencies:

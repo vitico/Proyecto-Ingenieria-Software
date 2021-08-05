@@ -20,6 +20,9 @@ module.exports = {
             node: {
                 paths: ['.'],
             },
+            typescript:{
+                "alwaysTryTypes": true
+            }
         },
         'import/parsers': {
             '@typescript-eslint/parser': ['.ts', '.tsx'],

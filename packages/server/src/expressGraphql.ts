@@ -9,11 +9,14 @@ import {
 } from 'postgraphile';
 import graphqlPlayground from 'graphql-playground-middleware-express';
 import { buildContext, createOnConnect } from 'graphql-passport';
+import { GraphQLDatabaseLoader } from '@mando75/typeorm-graphql-loader';
+
 //npx postgraphile -c 'postgres://postgres:changeme@192.168.1.104/movil' --watch --enhance-graphiql --dynamic-json
 import { createServer, Server } from 'http';
 import { execute, subscribe } from 'graphql';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { getConnectionManager } from 'typeorm';
 const convertHandler =
     (handler: (res: PostGraphileResponse) => Promise<void>) =>
     (request: Request, response: Response, next: NextFunction) => {
@@ -32,7 +35,12 @@ export async function setupExpressGraphql(
 
     const server = new ApolloServer({
         schema,
-        context: ({ req, res }) => buildContext({ req, res }),
+        context: ({ req, res }) =>
+            buildContext({
+                req,
+                res,
+                loader: new GraphQLDatabaseLoader(getConnectionManager().get(), {}),
+            }),
     });
     const subscriptionServer = SubscriptionServer.create(
         {

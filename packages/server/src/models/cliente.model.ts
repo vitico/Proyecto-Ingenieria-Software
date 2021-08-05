@@ -1,19 +1,14 @@
 import {
     Column,
     Entity,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
     ManyToOne,
     OneToMany,
     PrimaryColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Factura } from './factura.model';
 import { HBaseEntity } from './item.model';
 import { Notificacion } from './notificacion.model';
-import { Producto } from './producto.model';
-import { ProductoUnidad } from './proudcto_unidad.model';
-import { Unidad } from './unidad.model';
 
 @Entity()
 export class Cliente extends HBaseEntity {
@@ -33,7 +28,10 @@ export class Cliente extends HBaseEntity {
     telefonos!: Telefono[];
     @OneToMany(() => Notificacion, (t) => t.cliente)
     notificaciones!: Notificacion[];
+    @OneToMany(() => Factura, (t) => t.cliente)
+    facturas!: Factura[];
 }
+
 @Entity()
 export class Correo extends HBaseEntity {
     @ManyToOne(() => Cliente, (t) => t.correos, { primary: true })

@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/caiobsouza/node-typescript#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2",
     "@types/body-parser": "^1.19.1",
     "@types/debug": "4.1.6",
     "@types/eslint": "^7.28.0",
@@ -52,6 +53,7 @@
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-formatter-mo": "^1.0.1",
+    "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-prettier": "^3.4.0",
@@ -68,6 +70,7 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^7.1.5",
+    "@mando75/typeorm-graphql-loader": "^1.7.4",
     "@risingstack/protect": "^1.2.0",
     "@types/compression": "^1.7.1",
     "@types/cors": "^2.8.12",
@@ -77,6 +80,7 @@
     "@types/pg": "^8.6.1",
     "apollo-server": "^3.0.2",
     "apollo-server-express": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",

@@ -1,18 +1,7 @@
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    AfterLoad,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { HBaseEntity } from './item.model';
 import { Producto } from './producto.model';
-import { ProductoUnidad } from './proudcto_unidad.model';
-import { Unidad } from './unidad.model';
+import { Cliente } from '@/models/cliente.model';
 
 @Entity()
 export class Factura extends HBaseEntity {
@@ -21,14 +10,17 @@ export class Factura extends HBaseEntity {
 
     @OneToMany(() => DetalleFactura, (t) => t.factura, { lazy: true })
     detalles!: DetalleFactura[];
+    @ManyToOne(() => Cliente, (t) => t.facturas)
+    cliente!: Cliente;
 }
+
 @Entity()
 export class DetalleFactura extends HBaseEntity {
     @ManyToOne(() => Factura, { primary: true })
     factura!: Factura;
 
-    @ManyToOne(() => ProductoUnidad, { primary: true })
-    producto!: ProductoUnidad;
+    @ManyToOne(() => Producto, { primary: true })
+    producto!: Producto;
 
     @Column()
     precio!: number;

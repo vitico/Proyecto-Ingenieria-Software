@@ -1,19 +1,21 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { Entidad } from './entidad.base';
 import { Grupo } from './grupo.model';
-import { Unidad } from './unidad.model';
+import { IngredienteUnidad } from '@/models/ingrediente_unidad.model';
 
 @Entity()
 export class Producto extends Entidad {
     @ManyToMany(() => Grupo, (t) => t.productos)
     @JoinTable({ name: 'producto_grupo' })
     grupos!: Grupo;
-    @Column()
-    vendible!: boolean;
+    @Column({ default: 'false' })
+    esCompania!: boolean;
+    @Column({ default: 'false' })
+    aceptaCompana!: boolean;
 
     @ManyToMany(() => Producto)
     @JoinTable({ name: 'ingrediente_producto' })
-    ingredientes!: Producto[];
+    ingredientes!: IngredienteUnidad[];
     // @OneToMany(() => DetalleOfertaProducto, (t) => t.producto)
     // ofertas!: DetalleOfertaProducto;
 }
