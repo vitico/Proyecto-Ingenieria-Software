@@ -1,5 +1,5 @@
 const moduleAlias = require('module-alias');
-moduleAlias.addAlias('@', __dirname);
+moduleAlias.addAlias('@hhapp/server', __dirname);
 import 'reflect-metadata';
 
 import http from 'http';

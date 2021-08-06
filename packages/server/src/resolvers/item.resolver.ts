@@ -2,8 +2,8 @@ import { createParamDecorator, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { Item } from '@/models/item.model';
-import { MyContextType } from '@/types/MyContext.type';
+import { Item } from '../models/item.model';
+import { MyContextType } from '../types/MyContext.type';
 import { GraphQLResolveInfo } from 'graphql';
 export type getLoaderReturn = [MyContextType['loader'], GraphQLResolveInfo];
 

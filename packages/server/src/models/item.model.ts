@@ -1,9 +1,9 @@
 import { ObjectType, Field, ID } from 'type-graphql';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class HBaseEntity extends BaseEntity {
-    constructor(data: any) {
+    constructor(data?: any) {
         super();
-        Object.assign(this, data);
+        Object.assign(this, data || {});
     }
 }
 @Entity()

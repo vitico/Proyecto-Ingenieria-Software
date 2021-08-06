@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": [
     "src/**/*",
+    "scripts/**/*",
     "tests/**/*",
     ".eslintrc.js"
   ],
@@ -10,12 +11,9 @@
     "target": "esnext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "types": ["mocha"],
+    "types": ["mocha","node"],
     "baseUrl": ".",
     "lib": ["es2018", "esnext.asynciterable", "ES2015.Promise"],
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "allowJs": true
   }
 }

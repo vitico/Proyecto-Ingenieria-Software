@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "module": "commonjs",
     "target": "es2018",
     "moduleResolution": "node",
@@ -7,8 +9,9 @@
     "noEmit": true,
     "noEmitOnError": true,
     "skipLibCheck": true,
-    "strict": true,
-    "strictNullChecks": true,
+    "allowJs": true,
+    "strict": false,
+    "strictNullChecks": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,

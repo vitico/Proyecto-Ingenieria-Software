@@ -15,7 +15,7 @@ export async function connect() {
         password: 'changeme',
         entities: [__dirname + '/models/*.ts'],
         synchronize: true,
-        dropSchema: true,
+        dropSchema: false,
     });
     await con.connect();
 }
