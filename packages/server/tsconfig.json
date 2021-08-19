@@ -11,6 +11,7 @@
     "target": "esnext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "types": ["mocha","node"],
     "baseUrl": ".",
     "lib": ["es2018", "esnext.asynciterable", "ES2015.Promise"],

@@ -1,24 +1,32 @@
-import { AfterLoad, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    AfterLoad,
+    BeforeInsert,
+    BeforeUpdate,
+    Column,
+    Entity,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { HBaseEntity } from './item.model';
 import bcryptjs from 'bcryptjs';
+import { Field, ObjectType } from 'type-graphql';
 
 @Entity()
+@ObjectType()
 export class User extends HBaseEntity {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    @Field()
+    id!: string;
     @Column()
+    @Field()
     username!: string;
     @Column()
+    @Field()
     password!: string;
 
     private tempPassword = '';
 
-    @AfterLoad()
-    private loadTempPassword(): void {
-        this.tempPassword = this.password;
-    }
-
     @BeforeUpdate()
+    @BeforeInsert()
     public encryptPassword(): void {
         if (this.tempPassword !== this.password) {
             this.password = this.hashPassword(this.password);
@@ -32,5 +40,10 @@ export class User extends HBaseEntity {
 
     validPassword(pass: string) {
         return bcryptjs.compareSync(pass, this.password) || pass == this.password;
+    }
+
+    @AfterLoad()
+    private loadTempPassword(): void {
+        this.tempPassword = this.password;
     }
 }

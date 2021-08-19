@@ -18,16 +18,20 @@ import { setupExpressGraphql } from './expressGraphql';
 import passport from 'passport';
 import session from 'express-session';
 import { Server, createServer } from 'http';
+
 useContainer(Container);
+
 class App {
     public express: express.Application;
     public server: Server;
     sharedMiddleware: express.Handler[] = [];
+
     constructor() {
         require('dotenv').config();
         this.express = express();
         this.server = createServer(this.express);
     }
+
     async initialize() {
         await this.database();
         this.middleware();
@@ -44,17 +48,25 @@ class App {
         this.sharedMiddleware.push(passport.initialize());
         this.sharedMiddleware.push(passport.session());
     }
+
     public async graphql() {
         await setupExpressGraphql(this.express, this.server, this.sharedMiddleware);
     }
 
     public middleware(): void {
-        this.express.use(logger('dev'));
+        this.express.use(
+            logger('dev', {
+                skip(req: Request, res: Response): boolean {
+                    return req.originalUrl.includes('graphql');
+                },
+            })
+        );
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: false }));
         this.express.use(compression());
         this.securityMiddleware();
     }
+
     securityMiddleware(): void {
         this.express.use(cors());
         this.express.use(
@@ -112,6 +124,7 @@ class App {
         );
     }
 }
+
 function errorToObj(key: any, value: Error) {
     if (value instanceof Error) {
         const error = {} as Record<string, unknown>;

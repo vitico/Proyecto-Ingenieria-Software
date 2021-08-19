@@ -3,44 +3,35 @@ import { Service } from 'typedi';
 import { EntityManager, Repository } from 'typeorm';
 import { InjectManager, InjectRepository } from 'typeorm-typedi-extensions';
 import { logger } from '../utils';
-import { Ingrediente } from '../models/Ingrediente.model';
-import { Producto } from '../models/producto.model';
+import { Grupo } from '../models/grupo.model';
 
-@Resolver(() => Producto)
+@Resolver(() => Grupo)
 @Service()
-export class ProductoResolver {
+export class GrupoResolver {
     constructor(
-        @InjectRepository(Producto) private readonly repo: Repository<Producto>,
+        @InjectRepository(Grupo) private readonly repo: Repository<Grupo>,
         @InjectManager() private readonly manager: EntityManager
     ) {}
 
-    @Query((returns) => [Producto])
-    async productos(): Promise<Producto[]> {
+    @Query((returns) => [Grupo], { nullable: true })
+    async grupos(): Promise<Grupo[]> {
         return this.repo.find();
     }
 
-    @Query(() => Producto)
-    producto(@Arg('id') id: string) {
+    @Query(() => Grupo, { nullable: true })
+    grupo(@Arg('id') id: string) {
         return this.repo.findOne(id);
     }
 
     @Mutation(() => Boolean)
-    async saveProducto(
+    async saveGrupo(
         @Arg('id', { nullable: true }) id: string,
         @Arg('nombre') nombre: string,
-        @Arg('aceptaCompana') aceptaCompana: boolean,
-        @Arg('esCompania') esCompania: boolean,
-        @Arg('precio') precio: number,
-        @Arg('grupos') grupos: string[],
-        @Arg('ingredientes') ingredientes: string[]
+        @Arg('idPadre', { nullable: true }) idPadre: string
     ) {
-        const data = id ? await this.repo.findOne(id) : new Producto();
+        const data = id ? await this.repo.findOne(id) : new Grupo();
         data.nombre = nombre;
-        data.aceptaCompana = aceptaCompana;
-        data.esCompania = esCompania;
-        data.precio = precio;
-        data.idGrupos = grupos;
-        data.idIngredientes = ingredientes;
+        data.parent = idPadre ? <any>{ id: idPadre } : undefined;
         try {
             await this.repo.save(data);
             return true;
@@ -51,7 +42,7 @@ export class ProductoResolver {
     }
 
     @Mutation(() => Boolean)
-    async deleteProducto(@Arg('id') id: string) {
+    async deleteGrupo(@Arg('id') id: string) {
         try {
             await this.repo.delete(id);
             return true;

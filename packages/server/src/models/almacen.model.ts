@@ -1,11 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { HBaseEntity } from './item.model';
+import { Entity } from 'typeorm';
+import { Entidad } from './entidad.base';
+import { ObjectType } from 'type-graphql';
 
 @Entity()
-export class Almacen extends HBaseEntity {
-    @PrimaryGeneratedColumn()
-    id!: string;
-
-    @Column()
-    nombre!: string;
-}
+@ObjectType()
+export class Almacen extends Entidad {}

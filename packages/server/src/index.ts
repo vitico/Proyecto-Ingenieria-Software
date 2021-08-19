@@ -3,10 +3,10 @@ moduleAlias.addAlias('@hhapp/server', __dirname);
 import 'reflect-metadata';
 
 import http from 'http';
-import debug from 'debug';
+// import debug from 'debug';
 import App from './app';
 
-debug('tsnode-apiserver');
+// debug('tsnode-apiserver');
 
 const port: number | string = process.env.PORT || 3000;
 (async (): Promise<void> => {

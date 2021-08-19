@@ -1,35 +1,37 @@
+import { User } from '../models/user.model';
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 import { EntityManager, Repository } from 'typeorm';
 import { InjectManager, InjectRepository } from 'typeorm-typedi-extensions';
 import { logger } from '../utils';
-import { Unidad } from '../models/unidad.model';
 
-@Resolver(() => Unidad)
+@Resolver(() => User)
 @Service()
-export class UnidadResolver {
+export class UserResolver {
     constructor(
-        @InjectRepository(Unidad) private readonly repo: Repository<Unidad>,
+        @InjectRepository(User) private readonly repo: Repository<User>,
         @InjectManager() private readonly manager: EntityManager
     ) {}
 
-    @Query((returns) => [Unidad], { nullable: true })
-    async unidades(): Promise<Unidad[]> {
+    @Query((returns) => [User], { nullable: true })
+    async users(): Promise<User[]> {
         return this.repo.find();
     }
 
-    @Query(() => Unidad, { nullable: true })
-    unidad(@Arg('id') id: string) {
+    @Query(() => User, { nullable: true })
+    user(@Arg('id') id: string) {
         return this.repo.findOne(id);
     }
 
     @Mutation(() => Boolean)
-    async saveUnidad(
+    async saveUser(
         @Arg('id', { nullable: true }) id: string,
-        @Arg('nombre') nombre: string
+        @Arg('nombre') nombre: string,
+        @Arg('pass') pass: string
     ) {
-        const data = id ? await this.repo.findOne(id) : new Unidad();
-        data.nombre = nombre;
+        const data = id ? await this.repo.findOne(id) : new User();
+        data.username = nombre;
+        data.password = pass;
         try {
             await this.repo.save(data);
             return true;
@@ -40,11 +42,9 @@ export class UnidadResolver {
     }
 
     @Mutation(() => Boolean)
-    async deleteUnidad(@Arg('id') id: string) {
+    async deleteUser(@Arg('id') id: string) {
         try {
-            // this.repo.
             await this.repo.delete(id);
-            // await this.repo.save(this.repo.create(unidad));
             return true;
         } catch (e) {
             logger.error('error', e);

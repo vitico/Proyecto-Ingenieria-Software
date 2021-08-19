@@ -21,7 +21,7 @@ import { Cliente } from './cliente.model';
 @Entity()
 @ObjectType()
 @Check(
-    '( CASE WHEN "porcentajeDescuento" IS NULL THEN 0 ELSE 1 END + CASE WHEN "precioDescuento" IS NULL THEN 0 ELSE 1 END ) = 1'
+    '( CASE WHEN ( "porcentajeDescuento" IS NULL or "porcentajeDescuento" = 0 ) THEN 0 ELSE 1 END + CASE WHEN  ( "precioDescuento" IS NULL or "precioDescuento" = 0 )  THEN 0 ELSE 1 END ) <= 1'
 )
 export class Oferta extends HBaseEntity {
     @PrimaryGeneratedColumn()
@@ -34,11 +34,11 @@ export class Oferta extends HBaseEntity {
     @Field()
     fechaFinal!: Date;
 
-    @OneToMany(() => CondicionOferta, (t) => t.oferta)
-    @Field(() => [CondicionOferta])
+    @OneToMany(() => CondicionOferta, (t) => t.oferta, { cascade: true })
+    @Field(() => [CondicionOferta], { nullable: true })
     condicion!: CondicionOferta[];
-    @OneToMany(() => ExtraOferta, (t) => t.oferta)
-    @Field(() => [ExtraOferta])
+    @OneToMany(() => ExtraOferta, (t) => t.oferta, { cascade: true })
+    @Field(() => [ExtraOferta], { nullable: true })
     extra!: ExtraOferta[];
 
     @Column({ nullable: true })
@@ -70,11 +70,9 @@ export class BaseCondicionOferta extends HBaseEntity {
 
     @ManyToOne(() => Producto, { nullable: true })
     @JoinColumn({ name: 'idProducto' })
-    @Field({ nullable: true })
     producto?: Producto;
     @ManyToOne(() => Grupo, { nullable: true })
     @JoinColumn({ name: 'idGrupo' })
-    @Field({ nullable: true })
     grupo?: Grupo;
 
     @Column()
@@ -85,13 +83,17 @@ export class BaseCondicionOferta extends HBaseEntity {
     @Field()
     oferta!: Oferta;
 
-    @RelationId((condicion: BaseCondicionOferta) => condicion.producto)
+    @Column({ nullable: true })
     @Field({ nullable: true })
     idProducto: string;
-    @RelationId((condicion: BaseCondicionOferta) => condicion.grupo)
+    @Column()
+    @Field()
+    idOferta: string;
+    @Column({ nullable: true })
     @Field({ nullable: true })
     idGrupo: string;
 }
+
 @Entity({})
 @ObjectType()
 export class CondicionOferta extends BaseCondicionOferta {

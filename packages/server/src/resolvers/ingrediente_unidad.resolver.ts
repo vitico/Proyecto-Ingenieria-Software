@@ -1,35 +1,61 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Field, InputType, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 import { EntityManager, Repository } from 'typeorm';
 import { InjectManager, InjectRepository } from 'typeorm-typedi-extensions';
 import { logger } from '../utils';
-import { Ingrediente } from '../models/Ingrediente.model';
+import { IngredienteUnidad } from '../models/ingrediente_unidad.model';
 
-@Resolver(() => Ingrediente)
+@InputType()
+export class IdIngredienteUnidad {
+    @Field()
+    ingrediente: string;
+    @Field()
+    unidad: string;
+}
+
+@Resolver(() => IngredienteUnidad)
 @Service()
-export class IngredienteResolver {
+export class IngredienteUnidadResolver {
     constructor(
-        @InjectRepository(Ingrediente) private readonly repo: Repository<Ingrediente>,
+        @InjectRepository(IngredienteUnidad)
+        private readonly repo: Repository<IngredienteUnidad>,
         @InjectManager() private readonly manager: EntityManager
     ) {}
 
-    @Query((returns) => [Ingrediente])
-    async ingredientes(): Promise<Ingrediente[]> {
+    @Query((returns) => [IngredienteUnidad], { nullable: true })
+    async ingredientes_unidad(): Promise<IngredienteUnidad[]> {
         return this.repo.find();
     }
 
-    @Query(() => Ingrediente)
-    ingrediente(@Arg('id') id: string) {
-        return this.repo.findOne(id);
+    @Query(() => IngredienteUnidad, { nullable: true })
+    ingrediente_unidad(@Arg('id') id: IdIngredienteUnidad) {
+        return this.repo.findOne({
+            where: {
+                idIngrediente: id.ingrediente,
+                idUnidad: id.unidad,
+            },
+        });
     }
 
     @Mutation(() => Boolean)
-    async saveIngrediente(
-        @Arg('id', { nullable: true }) id: string,
-        @Arg('nombre') nombre: string
+    async saveIngredienteUnidad(
+        @Arg('id') id: IdIngredienteUnidad,
+        @Arg('precio') precio: number
     ) {
-        const data = id ? await this.repo.findOne(id) : new Ingrediente();
-        data.nombre = nombre;
+        let data = await this.repo.findOne({
+            where: {
+                idIngrediente: id.ingrediente,
+                idUnidad: id.unidad,
+            },
+        });
+        if (!data) {
+            data = new IngredienteUnidad();
+            data.idIngrediente = id.ingrediente;
+            data.idUnidad = id.unidad;
+        }
+        // data.ingrediente = <any>{ id: id.ingrediente };
+        // data.unidad = <any>{ id: id.unidad };
+        data.precio = precio;
         try {
             await this.repo.save(data);
             return true;
@@ -40,9 +66,12 @@ export class IngredienteResolver {
     }
 
     @Mutation(() => Boolean)
-    async deleteIngrediente(@Arg('id') id: string) {
+    async deleteIngredienteUnidad(@Arg('id') id: IdIngredienteUnidad) {
         try {
-            await this.repo.delete(id);
+            await this.repo.delete({
+                idIngrediente: id.ingrediente,
+                idUnidad: id.unidad,
+            });
             return true;
         } catch (e) {
             logger.error('error', e);

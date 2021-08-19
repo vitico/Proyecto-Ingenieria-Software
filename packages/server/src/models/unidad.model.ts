@@ -5,7 +5,11 @@ import { Producto } from './producto.model';
 import { IngredienteUnidad } from './ingrediente_unidad.model';
 import { Field, ObjectType } from 'type-graphql';
 
-@Entity()
+@Entity({
+    orderBy: {
+        id: 'ASC',
+    },
+})
 @ObjectType()
 export class Unidad extends Entidad {
     @OneToMany(() => IngredienteUnidad, (t) => t.unidad)

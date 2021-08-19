@@ -1,35 +1,67 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Field, InputType, Int, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
-import { EntityManager, Repository } from 'typeorm';
+import { Column, EntityManager, Repository } from 'typeorm';
 import { InjectManager, InjectRepository } from 'typeorm-typedi-extensions';
 import { logger } from '../utils';
-import { Almacen } from '../models/almacen.model';
+import { Inventario } from '../models/inventario.model';
 
-@Resolver(() => Almacen)
+@InputType()
+class IdInventarioInput {
+    @Field()
+    idIngrediente: string;
+
+    @Field()
+    idUnidad: string;
+    @Field()
+    idAlmacen: string;
+}
+
+@Resolver(() => Inventario)
 @Service()
-export class AlmacenResolver {
+export class InventarioResolver {
     constructor(
-        @InjectRepository(Almacen) private readonly repo: Repository<Almacen>,
+        @InjectRepository(Inventario) private readonly repo: Repository<Inventario>,
         @InjectManager() private readonly manager: EntityManager
     ) {}
 
-    @Query((returns) => [Almacen])
-    async almacenes(): Promise<Almacen[]> {
-        return this.repo.find();
+    @Query((_) => [Inventario], { nullable: true })
+    async inventarios(): Promise<Inventario[]> {
+        return this.repo.find({});
     }
 
-    @Query(() => Almacen)
-    almacen(@Arg('id') id: string) {
-        return this.repo.findOne(id);
+    @Query(() => Inventario, { nullable: true })
+    inventario(@Arg('id') id: IdInventarioInput) {
+        return this.repo.findOne({
+            where: {
+                idIngrediente: id.idIngrediente,
+                idUnidad: id.idUnidad,
+                idAlmacen: id.idAlmacen,
+            },
+        });
     }
 
     @Mutation(() => Boolean)
-    async saveAlmacen(
-        @Arg('id', { nullable: true }) id: string,
-        @Arg('nombre') nombre: string
+    async saveInventario(
+        @Arg('id') id: IdInventarioInput,
+        @Arg('cantidad', (_) => Int) cantidad: number
     ) {
-        const data = id ? await this.repo.findOne(id) : new Almacen();
-        data.nombre = nombre;
+        let data = await this.repo.findOne({
+            where: {
+                idIngrediente: id.idIngrediente,
+                idUnidad: id.idUnidad,
+                idAlmacen: id.idAlmacen,
+            },
+        });
+        if (!data) {
+            data = new Inventario();
+            data.almacen = <any>{ id: id.idAlmacen };
+            data.ingrediente = <any>{
+                idIngrediente: id.idIngrediente,
+                idUnidad: id.idUnidad,
+            };
+        }
+        data.cantidad = cantidad;
+
         try {
             await this.repo.save(data);
             return true;
@@ -40,9 +72,13 @@ export class AlmacenResolver {
     }
 
     @Mutation(() => Boolean)
-    async deleteAlmacen(@Arg('id') id: string) {
+    async deleteInventario(@Arg('id') id: IdInventarioInput) {
         try {
-            await this.repo.delete(id);
+            await this.repo.delete({
+                idIngrediente: id.idIngrediente,
+                idUnidad: id.idUnidad,
+                idAlmacen: id.idAlmacen,
+            });
             return true;
         } catch (e) {
             logger.error('error', e);

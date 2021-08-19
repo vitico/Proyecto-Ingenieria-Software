@@ -1,11 +1,12 @@
 import Faker from 'faker';
 import { define } from 'typeorm-seeding';
 import { DetalleFactura, Factura } from '../models/factura.model';
+
 define(Factura, (faker: typeof Faker, { clientes }) => {
     // const gender = faker.random.number(1);
     const data = new Factura();
     data.cliente = faker.random.arrayElement(clientes);
-
+    data.fecha = faker.date.past();
     return data;
 });
 define(DetalleFactura, (faker: typeof Faker, { productos }) => {

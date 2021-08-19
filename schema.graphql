@@ -1,0 +1,330 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Almacen {
+    id: String!
+    nombre: String!
+}
+
+type BaseCondicionOferta {
+    cantidad: Float!
+    id: String!
+    idGrupo: String
+    idOferta: String!
+    idProducto: String
+    oferta: Oferta!
+}
+
+type Cliente {
+    apellido: String!
+    correos: [Correo!]!
+    facturas: [Factura!]!
+    gustos: [ReferenciaGustoCliente!]!
+    id: Float!
+    identificacion: String!
+    nombre: String!
+    notificaciones: [Notificacion!]!
+    telefonos: [Telefono!]!
+}
+
+type CondicionOferta {
+    cantidad: Float!
+    id: String!
+    idGrupo: String
+    idOferta: String!
+    idProducto: String
+    oferta: Oferta!
+    opcional: Boolean!
+}
+
+type Correo {
+    cliente: Cliente!
+    correo: String!
+}
+
+type DetalleFactura {
+    cantidad: Float!
+    factura: Factura!
+    idFactura: String!
+    idProducto: String!
+    importe: Float!
+    itbis: Float!
+    precio: Float!
+    producto: Producto!
+}
+
+type Entidad {
+    id: String!
+    nombre: String!
+}
+
+type ExtraOferta {
+    cantidad: Float!
+    id: String!
+    idGrupo: String
+    idOferta: String!
+    idProducto: String
+    oferta: Oferta!
+}
+
+type Factura {
+    cliente: Cliente!
+    detalles: [DetalleFactura!]!
+    fecha: DateTime!
+    id: String!
+    idCliente: String!
+}
+
+type Grupo {
+    children: [Grupo!]!
+    id: String!
+    idParent: String
+    nombre: String!
+    parent: Grupo
+    productos: [Producto!]!
+}
+
+type IdIngredienteUnidad2 {
+    idIngrediente: String!
+    idUnidad: String!
+}
+
+type IdIngredienteUnidadType {
+    ingrediente: IdType!
+    unidad: IdType!
+}
+
+type IdType {
+    id: String!
+}
+
+type Ingrediente {
+    id: String!
+    idUnidades: [IdIngredienteUnidad2!]!
+    nombre: String!
+    unidades: [IngredienteUnidad!]
+}
+
+type IngredienteUnidad {
+    idIngrediente: String!
+    idUnidad: String!
+    ingrediente: Ingrediente!
+    precio: Float!
+    unidad: Unidad!
+}
+
+type Inventario {
+    almacen: Almacen!
+    cantidad: Float!
+    idAlmacen: String!
+    idIngrediente: String!
+    idUnidad: String!
+    ingrediente: IngredienteUnidad!
+}
+
+type ItemClass {
+    createdAt: DateTime!
+    description: String!
+    id: ID!
+    isActive: Boolean!
+    modifiedAt: DateTime!
+    name: String!
+}
+
+type Mutation {
+    deleteAlmacen(id: String!): Boolean!
+    deleteCliente(id: String!): Boolean!
+    deleteFactura(id: String!): Boolean!
+    deleteGrupo(id: String!): Boolean!
+    deleteIngrediente(id: String!): Boolean!
+    deleteIngredienteUnidad(id: IdIngredienteUnidad!): Boolean!
+    deleteInventario(id: IdInventarioInput!): Boolean!
+    deleteProducto(id: String!): Boolean!
+    deleteUnidad(id: String!): Boolean!
+    deleteUser(id: String!): Boolean!
+    saveAlmacen(id: String, nombre: String!): Boolean!
+    saveCliente(apellido: String!, correos: [String!]!, gustos: [GustoArg!]!, id: String, identificacion: String!, nombre: String!): Boolean!
+    saveFactura(cliente: String!, detalles: [ArgDetalleFactura!]!, fecha: DateTime!, id: String): Boolean!
+    saveGrupo(id: String, idPadre: String, nombre: String!): Boolean!
+    saveIngrediente(id: String, nombre: String!, unidades: [ArgUnidades!]!): Boolean!
+    saveIngredienteUnidad(id: IdIngredienteUnidad!, precio: Float!): Boolean!
+    saveInventario(cantidad: Int!, id: IdInventarioInput!): Boolean!
+    saveOferta(activo: Boolean!, condicion: [ArgCondicionOferta!]!, extra: [ArgExtraOferta!]!, fechaFinal: DateTime!, fechaInicial: DateTime!, id: String, porcentajeDescuento: Float!, precioDescuento: Float!): Boolean!
+    saveProducto(aceptaCompana: Boolean = false, esCompania: Boolean = false, grupos: [String!], id: String, ingredientes: [IdIngredienteUnidad!], nombre: String!, precio: Float!): Boolean!
+    saveUnidad(id: String, nombre: String!): Boolean!
+    saveUser(id: String, nombre: String!, pass: String!): Boolean!
+}
+
+type Notificacion {
+    asunto: String!
+    cliente: Cliente!
+    cuerpo: String!
+    estado: EstadoCorreo!
+    oferta: Oferta!
+}
+
+type Oferta {
+    activo: Boolean!
+    clienteInteresado: [Cliente!]
+    condicion: [CondicionOferta!]
+    extra: [ExtraOferta!]
+    fechaFinal: DateTime!
+    fechaInicial: DateTime!
+    id: String!
+    notificaciones: [Notificacion!]!
+    porcentajeDescuento: Float
+    precioDescuento: Float
+}
+
+type PaginatedClienteResponse {
+    hasMore: Boolean!
+    items: [Cliente!]!
+    nextOffset: Int!
+    total: Int!
+}
+
+type Producto {
+    aceptaCompana: Boolean!
+    esCompania: Boolean!
+    grupos: [Grupo!]!
+    id: String!
+    idGrupos: [String!]!
+    idIngredientes: [IdIngredienteUnidadType!]!
+    ingredientes: [IngredienteUnidad!]
+    nombre: String!
+    precio: Float!
+}
+
+type Query {
+    almacen(id: String!): Almacen
+    almacenes: [Almacen!]
+    cliente(id: Float!): Cliente
+    clientes(pagination: OffsetArg): PaginatedClienteResponse!
+    clientesOferta(cantidadFacturas: Int = 10, oferta: String!): [Cliente!]
+    factura(id: String!): Factura
+    facturas: [Factura!]
+    grupo(id: String!): Grupo
+    grupos: [Grupo!]
+    ingrediente(id: String!): Ingrediente
+    ingrediente_unidad(id: IdIngredienteUnidad!): IngredienteUnidad
+    ingredientes: [Ingrediente!]
+    ingredientes_unidad: [IngredienteUnidad!]
+    inventario(id: IdInventarioInput!): Inventario
+    inventarios: [Inventario!]
+    oferta(id: String): Oferta
+    ofertas(id: String): [Oferta!]
+    producto(id: String!): Producto
+    productos: [Producto!]
+    recipes: [ItemClass!]
+    unidad(id: String!): Unidad
+    unidades: [Unidad!]
+    user(id: String!): User
+    users: [User!]
+}
+
+type ReferenciaGustoCliente {
+    cliente: Cliente!
+    grupo: Grupo
+    idGrupo: String
+    idIngrediente: String
+    idProducto: String
+    ingrediente: Ingrediente
+    producto: Producto
+    rechazar: Boolean!
+}
+
+type Telefono {
+    cliente: Cliente!
+    telefono: String!
+}
+
+type Unidad {
+    id: String!
+    ingredientes: [IngredienteUnidad!]!
+    nombre: String!
+}
+
+type User {
+    id: String!
+    password: String!
+    username: String!
+}
+
+"Estado envio del correo"
+enum EstadoCorreo {
+    cancelado
+    enviado
+    sinEnviar
+}
+
+enum GustoType {
+    grupo
+    ingrediente
+    producto
+}
+
+enum TipoDataOferta {
+    grupo
+    producto
+}
+
+input ArgCondicionOferta {
+    cantidad: Float!
+    id: String!
+    opcional: Boolean!
+    typo: TipoDataOferta!
+}
+
+input ArgDetalleFactura {
+    cantidad: Float!
+    importe: Float!
+    itbis: Float!
+    precio: Float!
+    producto: String!
+}
+
+input ArgExtraOferta {
+    cantidad: Float!
+    id: String!
+    typo: TipoDataOferta!
+}
+
+input ArgUnidades {
+    idUnidad: String!
+    precio: Float!
+}
+
+input EntidadInput {
+    id: String!
+    nombre: String!
+}
+
+input GustoArg {
+    id: String!
+    rechazar: Boolean!
+    tipo: GustoType!
+}
+
+input IdIngredienteUnidad {
+    ingrediente: String!
+    unidad: String!
+}
+
+input IdInventarioInput {
+    idAlmacen: String!
+    idIngrediente: String!
+    idUnidad: String!
+}
+
+input OffsetArg {
+    limit: Float
+    offset: Float
+}
+
+
+"The javascript `Date` as string. Type represents date and time as the ISO Date string."
+scalar DateTime

@@ -3,32 +3,32 @@ import { Service } from 'typedi';
 import { EntityManager, Repository } from 'typeorm';
 import { InjectManager, InjectRepository } from 'typeorm-typedi-extensions';
 import { logger } from '../utils';
-import { Ingrediente } from '../models/Ingrediente.model';
+import { Almacen } from '../models/almacen.model';
 
-@Resolver(() => Ingrediente)
+@Resolver(() => Almacen)
 @Service()
-export class IngredienteResolver {
+export class AlmacenResolver {
     constructor(
-        @InjectRepository(Ingrediente) private readonly repo: Repository<Ingrediente>,
+        @InjectRepository(Almacen) private readonly repo: Repository<Almacen>,
         @InjectManager() private readonly manager: EntityManager
     ) {}
 
-    @Query((returns) => [Ingrediente])
-    async ingredientes(): Promise<Ingrediente[]> {
+    @Query((returns) => [Almacen], { nullable: true })
+    async almacenes(): Promise<Almacen[]> {
         return this.repo.find();
     }
 
-    @Query(() => Ingrediente)
-    ingrediente(@Arg('id') id: string) {
+    @Query(() => Almacen, { nullable: true })
+    almacen(@Arg('id') id: string) {
         return this.repo.findOne(id);
     }
 
     @Mutation(() => Boolean)
-    async saveIngrediente(
+    async saveAlmacen(
         @Arg('id', { nullable: true }) id: string,
         @Arg('nombre') nombre: string
     ) {
-        const data = id ? await this.repo.findOne(id) : new Ingrediente();
+        const data = id ? await this.repo.findOne(id) : new Almacen();
         data.nombre = nombre;
         try {
             await this.repo.save(data);
@@ -40,7 +40,7 @@ export class IngredienteResolver {
     }
 
     @Mutation(() => Boolean)
-    async deleteIngrediente(@Arg('id') id: string) {
+    async deleteAlmacen(@Arg('id') id: string) {
         try {
             await this.repo.delete(id);
             return true;

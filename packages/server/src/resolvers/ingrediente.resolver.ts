@@ -1,55 +1,84 @@
-import {
-    FieldResolver,
-    Query,
-    Resolver,
-    Root,
-    ResolverInterface,
-    Args,
-    Arg,
-    Mutation,
-} from 'type-graphql';
+import { Arg, Field, InputType, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, getConnection, getManager, Repository } from 'typeorm';
 import { InjectManager, InjectRepository } from 'typeorm-typedi-extensions';
-import { Oferta } from '../models/oferta.model';
-import { Cliente, ReferenciaGustoCliente } from '../models/cliente.model';
-import { IngredienteUnidad } from '../models/ingrediente_unidad.model';
-import { DetalleFactura } from '../models/factura.model';
-import { Producto } from '../models/producto.model';
-import { fieldsList, fieldsMap } from 'graphql-fields-list';
-import { getInfo } from './item.resolver';
-import { GraphQLResolveInfo } from 'graphql';
 import { logger } from '../utils';
-import { Unidad } from '../models/unidad.model';
-import { Entidad } from '../models/entidad.base';
+import { Ingrediente } from '../models/Ingrediente.model';
+import { IngredienteUnidad } from '../models/ingrediente_unidad.model';
 
-@Resolver(() => Unidad)
+@InputType()
+class ArgUnidades {
+    @Field()
+    idUnidad: string;
+    @Field()
+    precio: number;
+}
+
+@Resolver(() => Ingrediente)
 @Service()
-export class UnidadResolver {
+export class IngredienteResolver {
     constructor(
-        @InjectRepository(Unidad) private readonly repo: Repository<Unidad>,
+        @InjectRepository(Ingrediente) private readonly repo: Repository<Ingrediente>,
         @InjectManager() private readonly manager: EntityManager
     ) {}
 
-    @Query((returns) => [Unidad])
-    async unidades(): Promise<Unidad[]> {
-        return this.repo.find();
+    @Query((returns) => [Ingrediente], { nullable: true })
+    async ingredientes(): Promise<Ingrediente[]> {
+        return this.repo.find({
+            relations: ['unidades'],
+        });
     }
 
-    @Query(() => Unidad)
-    unidad(@Arg('id') id: string) {
-        return this.repo.findOne(id);
+    @Query(() => Ingrediente, { nullable: true })
+    ingrediente(@Arg('id') id: string) {
+        return this.repo.findOne(id, {
+            relations: ['unidades'],
+        });
     }
 
     @Mutation(() => Boolean)
-    async saveUnidad(
+    async saveIngrediente(
         @Arg('id', { nullable: true }) id: string,
-        @Arg('nombre') nombre: string
+        @Arg('nombre') nombre: string,
+        @Arg('unidades', () => [ArgUnidades]) unidades: ArgUnidades[]
     ) {
-        const data = id ? await this.repo.findOne(id) : new Unidad();
+        const data = id
+            ? await this.repo.findOne(id, {
+                  relations: ['unidades'],
+              })
+            : new Ingrediente();
         data.nombre = nombre;
+        const toAdd = unidades
+            .map((unidad) => {
+                const i = data.unidades.findIndex((t) => t.idUnidad == unidad.idUnidad);
+                if (i !== -1) {
+                    data.unidades[i].precio = unidad.precio;
+                } else {
+                    const dt = new IngredienteUnidad();
+                    dt.ingrediente = data;
+                    dt.idUnidad = unidad.idUnidad;
+                    dt.precio = unidad.precio;
+                    return dt;
+                }
+            })
+            .filter(Boolean);
+        const toRemove = data.unidades.filter(
+            (t) => !unidades.some((uni) => uni.idUnidad == t.idUnidad)
+        );
         try {
-            await this.repo.save(data);
+            await getManager().transaction(async (manager) => {
+                await manager.save(data);
+                await manager.remove(toRemove);
+                await manager.save(
+                    toAdd.map((t) => {
+                        t.idIngrediente = data.id;
+                        return t;
+                    })
+                );
+            });
+
+            // data.unidades = data.unidades(t=>t.);
+            // await this.repo.save(data);
             return true;
         } catch (e) {
             logger.error('error', e);
@@ -58,11 +87,9 @@ export class UnidadResolver {
     }
 
     @Mutation(() => Boolean)
-    async deleteUnidad(@Arg('id') id: string) {
+    async deleteIngrediente(@Arg('id') id: string) {
         try {
-            // this.repo.
             await this.repo.delete(id);
-            // await this.repo.save(this.repo.create(unidad));
             return true;
         } catch (e) {
             logger.error('error', e);

@@ -1,3 +1,7 @@
+/**
+ * @type { import("typeorm").ConnectionOptions}
+ */
+
 module.exports = {
     type: 'postgres',
     port: 5432,
@@ -10,4 +14,4 @@ module.exports = {
     dropSchema: false,
     seeds: [__dirname + '/src/seeds/**/*{.ts,.js}'],
     factories: [__dirname + '/src/factories/**/*{.ts,.js}'],
-}
+};

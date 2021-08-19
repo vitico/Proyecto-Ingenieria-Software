@@ -36,10 +36,10 @@ export class Cliente extends HBaseEntity {
     @Field()
     identificacion!: string;
 
-    @OneToMany(() => Correo, (t) => t.cliente)
-    @Field(() => [Correo])
+    @OneToMany(() => Correo, (t) => t.cliente, { cascade: true })
+    @Field(() => [Correo], { nullable: true })
     correos!: Correo[];
-    @OneToMany(() => Telefono, (t) => t.cliente)
+    @OneToMany(() => Telefono, (t) => t.cliente, { cascade: true })
     @Field(() => [Telefono])
     telefonos!: Telefono[];
     @OneToMany(() => Notificacion, (t) => t.cliente)
@@ -50,7 +50,7 @@ export class Cliente extends HBaseEntity {
     facturas!: Factura[];
     @RelationId((c: Cliente) => c.facturas)
     idFactura: string[];
-    @OneToMany(() => ReferenciaGustoCliente, (t) => t.cliente)
+    @OneToMany(() => ReferenciaGustoCliente, (t) => t.cliente, { cascade: true })
     @Field(() => [ReferenciaGustoCliente])
     gustos: ReferenciaGustoCliente[];
 }
@@ -58,7 +58,7 @@ export class Cliente extends HBaseEntity {
 @Entity()
 @ObjectType()
 export class Correo extends HBaseEntity {
-    @ManyToOne(() => Cliente, (t) => t.correos, { primary: true, cascade: true })
+    @ManyToOne(() => Cliente, (t) => t.correos, { primary: true })
     @Field(() => Cliente)
     cliente!: Cliente;
     @PrimaryColumn()
@@ -91,21 +91,15 @@ export class ReferenciaGustoCliente extends HBaseEntity {
     @ManyToOne(() => Cliente, (t) => t.telefonos)
     @Field(() => Cliente)
     cliente!: Cliente;
-    @ManyToOne(() => Producto, {
-        nullable: true,
-    })
+    @ManyToOne(() => Producto)
     @JoinColumn({ name: 'idProducto' })
     @Field(() => Producto, { nullable: true })
     producto?: Producto;
-    @ManyToOne(() => Grupo, {
-        nullable: true,
-    })
+    @ManyToOne(() => Grupo)
     @JoinColumn({ name: 'idGrupo' })
     @Field(() => Grupo, { nullable: true })
     grupo?: Grupo;
-    @ManyToOne(() => Ingrediente, {
-        nullable: true,
-    })
+    @ManyToOne(() => Ingrediente)
     @JoinColumn({ name: 'idIngrediente' })
     @Field(() => Ingrediente, { nullable: true })
     ingrediente?: Ingrediente;
@@ -113,15 +107,15 @@ export class ReferenciaGustoCliente extends HBaseEntity {
     @Field()
     rechazar?: boolean;
 
-    @RelationId((gusto: ReferenciaGustoCliente) => gusto.producto)
+    @Column({ nullable: true })
     @Field({ nullable: true })
     idProducto?: string;
 
-    @RelationId((gusto: ReferenciaGustoCliente) => gusto.grupo)
+    @Column({ nullable: true })
     @Field({ nullable: true })
     idGrupo?: string;
 
-    @RelationId((gusto: ReferenciaGustoCliente) => gusto.ingrediente)
+    @Column({ nullable: true })
     @Field({ nullable: true })
     idIngrediente?: string;
 }
