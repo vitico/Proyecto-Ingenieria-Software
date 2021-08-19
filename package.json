@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
-    "start:client": "lerna run start --stream  --scope=@hhapp/myapp",
+    "start:client": "cd packages/myapp && yarn start",
+    "start:client:old": "lerna run start --stream  --scope=@hhapp/myapp",
     "start:server": "lerna run dev --stream  --scope=@hhapp/server",
     "start:watch": "lerna run watch --parallel",
     "build": "lerna run build:libs",

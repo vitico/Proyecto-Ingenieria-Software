@@ -1,47 +1,31 @@
-# expo-react-react-native-monorepo-example
-Starter Kit for Monorepo containing react and react native projects.
+# Proyecto de ingenieria de software
 
-## Installation
+Este proyecto utiliza nodejs como lenguaje, ademas de Yarn Berry como manejador de paquetes. El servidor fue
+desarrollado con express, postgresql y graphql. El cliente se desarrollo con create-react-app, antd y apollo
+
+## Instalacion de dependencias
+
 ```
-git@github.com:habilelabs/expo-react-react-native-monorepo-example.git <project_folder>
-cd <project_folder>
+git clone git@github.com:vitico/Proyecto-Ingenieria-Software.git <folder>
+cd <folder>
+yarn install
+cd packages/myapp
 yarn install
 ```
-To start web application
-```
-lerna --scope=web-app run start
-```
-I also added quick commands. you can use 
-```
-yarn web
-```
 
-To start Native android app
-```
-lerna --scope=NativeApp run android 
-```
-or  quick command
-```
-yarn android
-```
+> es necesario realizar 2 instalaciones debido a un error en el cliente que no he podido resolver
 
-To start Native ios App
-```
-lerna --scope=NativeApp run ios
-```
+## Iniciar el sistema
 
-or  quick command
-```
-yarn ios
-```
-
-To start Expo app
+podemos ejecutar `yarn start` para inciar el servidor y el cliente, o `yarn start:server` y `yarn start:client` para
+iniciarlos por separado
 
 ```
-lerna --scope=ExpoApp run start
+yarn start
 ```
 
-or  quick command
-```
-yarn expo
-```
+## configuracion sistema
+
+para que el servidor funcione hay que modificar el archivo `packages/server/ormconfig.js` y poner los datos de la base
+de datos. en el caso del cliente, se modificaria el archivo `packages/myapp/public/config.json` para indicarle la
+direccion del servidor
